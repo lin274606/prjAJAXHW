@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "作業六";
+}
+
+<h1>作業六</h1>
+
+<select id="selectCity">
+</select>
+<select id="selectDistrict">
+</select>
+<select id="selectRoad">
+</select>
+
+
+@section Styles{
+
+}
+
+@section Scripts{
+    <script>
+        const selCity = document.querySelector('#selectCity');
+        const selDistrict = document.querySelector('#selectDistrict');
+        const selRoad = document.querySelector('#selectRoad');
+
+        LoadCities();
+
+        async function LoadCities() {
+            try {
+                const response = await fetch('/api/cities');
+                const datas = await response.json();
+
+                var cities = datas.map(city => {
+                    return (`<option value="${city}">${city}</option>`);
+                });
+
+                selCity.innerHTML = cities.join("");
+                LoadDistricts();
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function LoadDistricts() {
+            try {
+                const city = selCity.options[selCity.selectedIndex].value;
+                const response = await fetch(`/api/districts?city=${city}`);
+                const datas = await response.json();
+
+                var districts = datas.map(district => {
+                    return (`<option value="${district}">${district}</option>`);
+                });
+
+                selDistrict.innerHTML = districts.join("");
+                LoadRoads();
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function LoadRoads() {
+            try {
+                const district = selDistrict.options[selDistrict.selectedIndex].value;
+                const response = await fetch(`/api/roads?SiteId=${district}`);
+                const datas = await response.json();
+
+                var roads = datas.map(road => {
+                    return (`<option value="${road}">${road}</option>`);
+                });
+
+                selRoad.innerHTML = roads.join("");
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        selCity.addEventListener('change', () => {
+            LoadDistricts();
+        });
+
+        selDistrict.addEventListener('change', () => {
+            LoadRoads();
+        });
+    </script>
+}

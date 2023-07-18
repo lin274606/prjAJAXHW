@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "作業三+作業五";
+}
+
+<h1>作業三+作業五</h1>
+<div class="row">
+    <div class="col-3">
+        <a href="~/home/index" id="linkPage">Index Page</a>
+    </div>
+    <div class="col-6">
+        <form method="Post" action="~/api/register" name="registerForm">
+            <div class="mb-3">
+                <label for="InputUserName" class="form-label">姓名</label>
+                <input type="text" class="form-control" id="InputUserName" name="Name" />
+                <div id="nameHelp" class="form-text"></div>
+            </div>
+            <div class="mb-3">
+                <label for="InputEmail" class="form-label">電子郵件</label>
+                <input type="email" class="form-control" id="InputEmail" name="Email" />
+            </div>
+            <div class="mb-3">
+                <label for="InputAge" class="form-label">年紀</label>
+                <input type="number" class="form-control" id="InputAge" name="Age">
+            </div>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">選擇檔案</label>
+                <input class="form-control" type="file" id="formFile" name="Photo">
+            </div>
+            <button id="btnSubmit" class="btn btn-primary">Submit</button>
+        </form>
+        <div id="div1" class="alert alert-info mt-3">
+            <img src="~/wwwroot/uploads" />
+        </div>
+    </div>
+    <div class="col-3"></div>
+</div>
+
+@section Scripts{
+    <script>
+        const btnSubmit = document.querySelector('#btnSubmit');
+        const page = document.querySelector('#linkPage');
+        const divAlert = document.querySelector('#div1');
+        const nameAlert = document.querySelector('#InputUserName')
+
+        btnSubmit.addEventListener('click', event => {
+            event.preventDefault();
+
+            const xhr = new XMLHttpRequest();
+            const formData = new FormData(document.registerForm);
+            xhr.open('POST', '/api/register');
+            xhr.send(formData);
+
+            xhr.addEventListener('load', () => {
+                const data = xhr.responseText;
+                divAlert.innerHTML = data;
+            })
+        })
+
+        page.addEventListener('click', event => {
+            if (!window.confirm("??")) {
+                event.preventDefault();
+                console.log('page');
+            }
+        })
+
+        nameAlert.addEventListener('blur', event => {            
+            const inputName = document.querySelector('#InputUserName')
+            console.log(inputName.value);
+            //const response = fetch('/api/CheckAccount');
+            //    const datas = response.text();
+            //    if (datas == "") {
+
+            //    }
+            
+        })
+    </script>
+}
+
+@section Styles{
+    <style></style>
+}

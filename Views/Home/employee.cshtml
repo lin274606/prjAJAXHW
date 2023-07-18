@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "作業一";
+}
+
+<h1>作業一</h1>
+<table id="employeesTable" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>姓名</th>
+            <th>年資</th>
+            <th>薪水</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+
+@section Scripts{
+    <script src="~/wwwroot/lib/jquery/dist/jquery.js"></script>
+    <script>
+        const emp = {
+            "employees": [
+                { "name": "Tom", "workYears": 3, "salary": 35000 },
+                { "name": "Jack", "workYears": 5, "salary": 40000 },
+                { "name": "Mary", "workYears": 7, "salary": 45000 }
+            ]
+        };
+
+        const datas = emp.employees.map(e => {
+            const { name, workYears, salary } = e;
+            return (`<tr>
+                       <td>${name}</td>
+                       <td>${workYears}</td>
+                       <td>${salary}</td>
+                    </tr>`)
+        });
+
+        //document.querySelector('#employeesTable>tbody').innerHTML = datas.join("");
+        $(document).ready(function () {
+            $('#employeesTable>tbody').html(datas.join(""));
+        });
+    </script>
+}
